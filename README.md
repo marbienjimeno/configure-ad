@@ -29,7 +29,7 @@ This tutorial outlines the implementation of on-premises Active Directory within
 - Step 3: Install Active Directory.
 - Step 4: Create an Admin account in Active Directory.
 - Step 5: Join our Client-1 machine to our domain (mydomain.com).
-- Step 6: Setup Remote Desktop for non-administrative users on Client-1
+- Step 6: Setup Remote Desktop for non-administrative users on Client-1.
 - Step 7: Create additional users and attempt to log into our Client-1 machine as on of the users.
 
 <h2>Deployment and Configuration Steps</h2>
@@ -152,3 +152,75 @@ This tutorial outlines the implementation of on-premises Active Directory within
 ![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/901f9a7c-3f93-429f-87f0-6e3f068fc316)
 
 **Step 5: Join our Client-1 machine to our domain (mydomain.com).**
+<p>
+  Next, we'll join our Client-1 machine to our mydomain.com domain. We'll need to set our Client-1's DNS settings to our DC-1 machine's Private IP address. Client-1 will need to use DC-1 as its DNS server in order to be added into its domain. Inside the Azure Portal, go to our Client-1 virtual machine. Under Settings on the left sidebar menu, select Networking. Click on the Network Interface. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/4400603d-a8da-4abb-9d87-1b7c06e2e136)
+
+<p>
+  Under Settings on the left sidebar menu, select DNS servers. We'll set DC-1's private IP address as Client-1's DNS server. Select Custom and enter "10.0.0.4" under DNS server. Click Save.
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/6a41b04d-83d9-43bc-b09a-194b4fb0cc08)
+
+<p>
+  Go back to the Client-1 virtual machine and click Restart. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/40ff4362-768c-4851-a20a-3385198709b9)
+
+<p>
+  Using Remote Desktop, connect into the Client-1 machine. Login using our labuser account. Right-click the Start icon and select System. Then select Rename this PC (advanced) on the right side menu. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/1c1f396a-4d7f-49c5-891a-92598597453f)
+
+<p>
+  Inside System Properties, click on Change.... Under Member of, select Domain and enter "mydomain.com". Click OK. When prompted, enter Jane Doe's admin account credentials to get permission to change the domain. For User name, enter "mydomain.com\a-jane.doe" and enter Jane's password. When the domain change has completed, the machine will be prompted to restart. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/2390e418-bf9c-4aae-a10d-b5d9c3612e17)
+
+**Step 6: Setup Remote Desktop for non-administrative users on Client-1.**
+<p>
+  For now, only domain admins are able to log into Client-1 and use its resources. Next, we'll set it so that non-administrative users can also log into Client-1. Log into Client-1 using Jane Doe's admin account. Right-click on the Start icon and select System. Inside Settings, select Remote Desktop. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/59f07fca-dae5-4488-8de5-b77c72e13936)
+
+<p>
+  Under User Accounts, click on Select users that can remotely access this PC. Inside Remote Desktop Users, click Add. Enter "domain users" and click on Check Names. Click OK.
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/9551d655-d283-4823-aaa8-69c133fbc940)
+
+**Step 7: Create additional users and attempt to log into our Client-1 machine as on of the users.**
+<p>
+  Now that non-administrative users can log into Client-1, we will create additional normal users. Go to the DC-1 VM and open Windows Powershell ISE as an Administrator. Click on the New File icon. Copy and paste the Powershell script from the following GitHub link: [https://github.com/joshmadakor1/AD_PS/blob/master/Generate-Names-Create-Users.ps1](https://github.com/joshmadakor1/AD_PS/blob/master/Generate-Names-Create-Users.ps1). This powershell script will create 10000 new normal Users in our Active Directory with randomly generated names and a default password. The new Users will be placed in the _EMPLOYEES OU in our Active Directory. Click Run to run the script. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/8b223ad4-32d9-4d79-bc51-d49be75b561a)
+
+<p>
+  We can confirm that the new Users have been successfuly created by looking inside the _EMPLOYEES OU in Active Directory Users and Computers. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/74ed57af-54c0-4681-a03a-80a0dbeb1511)
+
+<p>
+  Now we'll attempt to log into our Client-1 machine using one of the new User accounts. Log off Client-1 and log in using one of the new User's credentials. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/2199e2c7-4a1f-43f7-8e80-2a34784a5d17)
+
+ <p>
+   We have successfully logged into Client-1 using one of the new User accounts.
+ </p>
+
+ ![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/84753782-7ad5-47d1-bbe9-37875f9c0b02)
+
+**Conclusion**
+<p>
+  In this lab, we successfully implemented an on-premises Active Directory system using Azure Virtual Machines. 
+</p>
