@@ -27,9 +27,10 @@ This tutorial outlines the implementation of on-premises Active Directory within
 - Step 1: Set up our resources in Azure.
 - Step 2: Ensure connectivity between our client machine and the Domain Controller.
 - Step 3: Install Active Directory.
-- Step 4: Create an Admin account and a normal User account in Active Directory.
+- Step 4: Create an Admin account in Active Directory.
 - Step 5: Join our Client-1 machine to our domain (mydomain.com).
-- Step 6: Create additional users and attempt to log into our CLient-1 machine as on of the users.
+- Step 6: Setup Remote Desktop for non-administrative users on Client-1
+- Step 7: Create additional users and attempt to log into our Client-1 machine as on of the users.
 
 <h2>Deployment and Configuration Steps</h2>
 
@@ -97,3 +98,57 @@ This tutorial outlines the implementation of on-premises Active Directory within
 ![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/d5aa9e3d-ce5c-485f-8225-d66947aafcf7)
 
 **Step 3: Install Active Directory.**
+<p>
+  After confirming cinnectivity between our Client-1 and DC-1 machines, we'll start installing Active Directory on our domain controller. Go to our DC-1 machine and open Server Manager. Click on Add roles and features. Click Next until you get to Server Roles. Select Active Directory Domain Services (AD DS) and add the features required for AD DS. Click Next until you are able to install AD DS.
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/3fe59211-43e4-420a-9703-027c9ccbb5db)
+
+<p>
+  Once AD DS has finished installing, click on the flag icon on the top-right menu. Click on Promote this server to a domain controller. In Deployment Configuration, select Add a new forest. For Root domain name, enter "mydomain.com". Click Next.
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/e82673f6-866b-4316-ac35-6313b51cf934)
+
+<p>
+  In the Domain Controller Options settings, enter a password for Directory Services Restore Mode (DSRM). We will not be using this password for the rest of the lab. Click Next until we are able to proceed with the installation. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/ee1610a4-dbec-48e7-8b26-e7573c482d0d)
+
+<p>Once the installation has finished, you will be prompted to restart the machine.</p>
+
+**Step 4: Create an Admin account in Active Directory.**
+<p>
+  Now that we've installed Active Directory, we will create an administrator account. Use Remote Desktop to connect into our DC-1 machine. This time, we'll log in using with the username "mydomain.com\labuser". Our labuser account is now under our newly created domain. Use the same password. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/442af1d2-c4b8-4726-ba1c-d12861e767e8)
+
+<p>
+  On the top right menu, click on Tools. Select Active Directory Users and Computers. Create two new Organizational Units (OUs) inside mydomain.com. One will be named "_EMPLOYEES" and will hold non-administrative users.The other will be named "_ADMINS" and will hold users with administrative privileges. Right-click on mydomain.com and select Refresh. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/d421b218-2840-447c-92c2-e24143f989f2)
+
+<p>
+  Create a new User inside the _ADMINS OU. This new admin user will be named "Jane Doe". For User logon name, we'll use "a-jane.doe". The "a-" indicated that Jane Doe is an admin account. Enter a password for Jane's user account. Make sure to remember Jane's username and password for later reference. Uncheck the box stating "User must change password at next logon". 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/fe93ca05-0418-4355-a026-5fb694f684af)
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/7d1e2448-8d3b-4e77-9e3d-30a0aa01e02a)
+
+<p>
+  Richt-click on Jane Doe and select Properties. Go to the Member of tab and Click Add. Enter "domain admins" and click Check Names. Click OK. 
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/5bf0fe40-443a-4644-985a-9a31a926f3f9)
+
+<p>
+  Log out and close the Remote Desktop Connection to our DC-1 VM. Log back in using Jane Doe's admin account. For User name, enter "mydomain.com\a-jane.doe". Enter Jane Doe's password. We will continue this lab using Jane's admin account.
+</p>
+
+![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/901f9a7c-3f93-429f-87f0-6e3f068fc316)
+
+**Step 5: Join our Client-1 machine to our domain (mydomain.com).**
