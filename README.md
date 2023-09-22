@@ -85,7 +85,7 @@ This tutorial outlines the implementation of on-premises Active Directory within
 ![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/a0c10295-221f-42ca-8835-197b18788658)
 
 <p>
-  Use Remote Desktop to connect into our DC-1 VM. Log in using the username and password we created when setting up our DC-1 VM. Once connected, serach "wf.msc" into the search bar and open the Microsoft Common Console Document. Once in the Windows Defender Firewall with Advanced Security window, click on Inbound Rules on the left sidebar menu. Enable the two Core Networking Diagnostics - ICMP Echo Request (ICMPv4-In).
+  Use Remote Desktop to connect into our DC-1 VM. Log in using the username and password we created when setting up our DC-1 VM. Once connected, search "wf.msc" into the search bar and open the Microsoft Common Console Document. Once in the Windows Defender Firewall with Advanced Security window, click on Inbound Rules on the left sidebar menu. Enable the two Core Networking Diagnostics - ICMP Echo Request (ICMPv4-In).
 </p>
 
 ![image](https://github.com/marbienjimeno/configure-ad/assets/29347863/2746c3f6-6fb0-4963-8e10-34225fe6c60d)
